@@ -1,0 +1,102 @@
+<html>
+<head>
+	<title>Fiap Agro </title>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+</head>
+
+
+<body>
+<div id="iframe-contents">
+	<div class="container">
+		<h1>Fiap Agro  - Grupo 1</h1>
+		<form>
+			<label>Digite o Indentificador do Drone:</label><br>
+			<input type="text" class="form-control" placeholder="Insira aqui o Indentificador do Drone" name="id_drone">
+			<label>Digite a Latitude do Drone:</label><br>
+			<input type="text" value='-23.5520995' class="form-control latitude" placeholder="Insira aqui a Latitude do Drone" name="latitude_drone">
+			<label>Digite a Longitude do Drone:</label><br>
+			<input type="text" value='-46.4882549' class="form-control longitude" placeholder="Insira aqui a Longitude do Drone" name="longitude_drone">
+			<label>Digite a Temperatura:</label><br>
+			<input type="text" class="form-control temperatura" placeholder="Insira aqui a Temperatura" name="temperatura">
+			<label>Digite a Umidade:</label><br>
+			<input type="text" class="form-control umidade"  placeholder="Insira aqui a Umidade do Drone" name="umidade">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="rastrear" checked value="1">
+				<label class="form-check-label" for="flexSwitchCheckChecked">Rastrear Drone</label>
+			</div>
+			<button class="btn btn-primary">Buscar Hemocentro</button>
+		</form>
+		<div id="map"></div>
+
+		<!--	//<center><img id='loading' src="./images/loading.gif"></center>-->
+	</div>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/jquery.mask.js"></script>
+	<script src="./js/jMaskStyle.js"></script>
+	<script src="./js/script.js"></script>
+
+	<script>
+		$(function (e){
+
+			setInterval(function() {
+
+				let rastrear = $("input[name='rastrear']:checked").val();
+
+				if(rastrear != undefined){
+					let form = $('form').serialize();
+					let lat = $('.latitude').val();
+					let long = $('.longitude').val();
+					console.log(lat);
+					initMap(parseFloat(lat),parseFloat(long));
+				}
+			}, 2000);
+
+
+		let map;
+
+		function initMap(lat, long) {
+			const uluru =  { lat: lat, lng: long }
+			map = new google.maps.Map(document.getElementById("map"), {
+				center: uluru,
+				zoom:12,
+			});
+
+			// The marker, positioned at Uluru
+			const marker = new google.maps.Marker({
+				position: uluru,
+				map: map,
+			});
+		}
+		});
+	</script>
+
+	<script>
+
+		$(function (e){
+
+			setInterval(function() {
+
+				let rastrear = $("input[name='rastrear']:checked").val();
+
+				if(rastrear != undefined){
+					let form = $('form').serialize();
+					console.log(form);
+				}
+			}, 2000);
+
+		});
+	</script>
+	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+	<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8VtYkrhGniZWkCyNqHw23SCp8nX6Fzyo&callback=initMap&v=weekly&channel=1"
+			async
+	></script>
+</div>
+
+</body>
+
+
