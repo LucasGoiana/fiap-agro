@@ -19,11 +19,17 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.google.code.gson:gson:2.6.2'
+	implementation 'org.json:json:20201115'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
+	implementation('org.springframework.boot:spring-boot-starter-security')
+
 	compileOnly 'org.projectlombok:lombok'
+	implementation 'com.rabbitmq:amqp-client:5.14.0'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
