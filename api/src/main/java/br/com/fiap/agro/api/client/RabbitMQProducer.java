@@ -9,26 +9,24 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-public class RabbitMQ   {
-    public String send(String mensagem){
+public class RabbitMQProducer {
+    public void send(String mensagem){
         var connection = RabbitMQConfig.getConnection();
         //Set up queue, exchanges and bindings
         RabbitAdmin admin = new RabbitAdmin(connection);
-        Queue queueSPFC = new Queue("teste");
+        Queue fiapAgro = new Queue("fiapAgro");
 
-        final String exchange = "exchange.teste";
+        final String exchange = "exchange.fiapAgro";
 
-        admin.declareQueue(queueSPFC);
+        admin.declareQueue(fiapAgro);
 
         DirectExchange exchangeTorcedor = new DirectExchange(exchange);
         admin.declareExchange(exchangeTorcedor);
 
-        admin.declareBinding(BindingBuilder.bind(queueSPFC).to(exchangeTorcedor).with("spfc"));
+        admin.declareBinding(BindingBuilder.bind(fiapAgro).to(exchangeTorcedor).with("fiapAgro"));
 
         RabbitTemplate template = new RabbitTemplate(connection);
 
-        template.convertAndSend(exchange, "spfc", "teste");
-
-        return "i";
+        template.convertAndSend(exchange, "fiapAgro", mensagem);
     }
 }
