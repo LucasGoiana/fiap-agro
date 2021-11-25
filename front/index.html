@@ -45,24 +45,53 @@
 
 				// Se checado entra no looping
 				let rastrear = $("input[name='rastrear']:checked").val();
-
 				if(rastrear != undefined){
 
 					//recuperando valores para medição
 					temperatura = $('.temperatura').val();
+					if(!validateTemperature(temperatura)) {
+						addClassErrorInComponent("temperatura")
+					}else{
+						removeClassErrorInComponent("temperatura")
+					}
+					
 					umidade = $('.umidade').val();
-
+					if(!validateHumidity(umidade)) {
+						addClassErrorInComponent("umidade")
+					}else{
+						removeClassErrorInComponent("umidade")
+					}
 					var rabbitMQ = {'RabbitMQ':[]};
 
-					
-					temperatura = $('.temperatura').val();
-					umidade = $('.umidade').val();
 
 					let form = $('form').serialize();
 					let lat = $('.latitude').val();
+					if(!isLatitude(lat)) {
+						addClassErrorInComponent("latitude")
+					}else{
+						removeClassErrorInComponent("latitude")
+					} 		
 					let long = $('.longitude').val();
+					if(!isLongitude(long)) {
+						addClassErrorInComponent("longitude");
+					}else{
+						removeClassErrorInComponent("longitude");
+					}	
 					let id_drone = $('.drone').val();
+					if(id_drone == '' || !isFinite(id_drone) || id_drone <= 0) {
+						addClassErrorInComponent("drone");
+					}else{
+						removeClassErrorInComponent("drone");
+					}
+
+					if($('.error').length > 0){
+						return false;
+					}
+
+					
+
 					let cont = 0;
+
 
 					if((temperatura < 35 && temperatura > 0) || umidade > 15) {
 						cont = 1;
@@ -189,6 +218,31 @@
 			});
 		}
 		});
+
+		function isLatitude(lat) {
+			return lat != "" && isFinite(lat) && Math.abs(lat) <= 90;
+		}
+
+		function isLongitude(lng) {
+			return lng != "" && isFinite(lng) && Math.abs(lng) <= 180;
+		}
+
+		function validateTemperature(temperature){
+			return temperature != '' && isFinite(temperature) && temperature >= -25 && temperature <= 40 ;
+		}
+
+		function validateHumidity(humidity){
+			return humidity != '' && isFinite(humidity) && humidity >= 0 && humidity <= 100 ; 
+		}
+
+		function addClassErrorInComponent(componentName){
+			$('.'+componentName).addClass("error")
+		}
+
+		function removeClassErrorInComponent(componentName){
+			$('.'+componentName).removeClass("error")
+		}
+
 	</script>
 	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
 	<script

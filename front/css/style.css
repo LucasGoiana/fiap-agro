@@ -11,6 +11,10 @@ h1{
 
 }
 
+.error{
+    border: 2px solid red;
+}
+
 form{
 
     margin-bottom: 50px;
