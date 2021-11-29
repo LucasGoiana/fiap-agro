@@ -72,7 +72,7 @@
 					leitura['temperatura'+cont] = temperatura;
 					leitura['umidade'+cont] = umidade;
 					leitura['lat'+cont] = lat;
-					leitura['long'+cont] = lat;
+					leitura['long'+cont] = long;
 
 					// Se maior que 6 ultrapassa 1 minuto e zero o array e o contador
 					if(cont >= 6 ){
@@ -104,6 +104,31 @@
 					console.log(lat);
 					initMap(parseFloat(lat),parseFloat(long));
 				}
+				dataTracking = {'Tracking':[]}
+				dataTracking.Tracking.push({
+					"latitude":lat,
+					"longitude":long
+				});
+
+				$.ajax({
+					method: "POST",
+					url: "http://localhost:8080/api/tracking/",
+					contentType: 'application/json',
+					data:JSON.stringify(dataTracking),
+					crossDomain: false,
+					success: function (data) {
+						cont = 1;
+						leitura = {'Tracking':[]};
+					},
+					error: function(jqXHR) {
+						$('#loading').css('display','none');
+						if(jqXHR.status == 400 ){
+							console.log('Erro com sua aplicação, Not Found!')
+						}else{
+							console.log('Erro Interno, Verifique se o servidor está ativo enviádo e tente novamente!!')
+						}
+					}
+				});
 			}, 2000);
 
 
