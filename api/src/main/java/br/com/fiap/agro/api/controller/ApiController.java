@@ -60,4 +60,13 @@ public class ApiController {
         }
 
     }
+
+
+    @PostMapping("/tracking/")
+    public String makeTracking(@RequestBody String information){
+        RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumer();
+        rabbitMQConsumer.consumer(mailSender);
+
+        return "OK";
+    }
 }
