@@ -8,10 +8,10 @@ public class RabbitMQConfig {
     public static CachingConnectionFactory getConnection(){
 
         if(connectionFactory == null){
-            connectionFactory = new CachingConnectionFactory("clam.rmq.cloudamqp.com");//TODO add hostname
-            connectionFactory.setUsername("uymxsaau");//TODO add username
-            connectionFactory.setPassword("jhEo4pivjk7sdKzlx4JKWTOe6G650RxP");//TODO add password
-            connectionFactory.setVirtualHost("uymxsaau");//TODO add virtualhost
+            connectionFactory = new CachingConnectionFactory("fox.rmq.cloudamqp.com");//TODO add hostname
+            connectionFactory.setUsername("ilnhidka");//TODO add username
+            connectionFactory.setPassword("pmvJp3rkp2hJNwNtAIsOR-K0UvczXBtE");//TODO add password
+            connectionFactory.setVirtualHost("ilnhidka");//TODO add virtualhost
             //Recommended settings
             connectionFactory.setRequestedHeartBeat(30);
             connectionFactory.setConnectionTimeout(30000);

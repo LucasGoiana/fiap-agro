@@ -15,7 +15,7 @@
 		<h1>Fiap Agro  - Grupo 1</h1>
 		<form>
 			<label>Digite o Indentificador do Drone:</label><br>
-			<input type="number" value="211221" class="form-control drone" placeholder="Insira aqui o Indentificador do Drone"  name="id_drone">
+			<input type="number" value="123" class="form-control drone" placeholder="Insira aqui o Indentificador do Drone"  name="id_drone">
 			<label>Digite a Latitude do Drone:</label><br>
 			<input type="text" value='-23.5520995' class="form-control latitude" placeholder="Insira aqui a Latitude do Drone" name="latitude_drone">
 			<label>Digite a Longitude do Drone:</label><br>
@@ -80,10 +80,10 @@
 						return false;
 					}
 
-					let cont = 0;
+					let cont = 1;
 
 					if((temperatura < 35 && temperatura > 0) || umidade > 15) {
-						cont = 1;
+						cont = 0;
 					}
 
 				// Se checado entra no looping
@@ -97,7 +97,7 @@
 					};
 					$.ajax({
 						method: "POST",
-						url: "http://localhost:8080/api/tracking/",
+						url: "http://localhost:8181/api/tracking/",
 						contentType: 'application/json',
 						data:JSON.stringify(location),
 						crossDomain: false,
@@ -126,12 +126,11 @@
 
 					$.ajax({
 						method: "POST",
-						url: "http://localhost:8080/api/producerRabbitMq/",
+						url: "http://localhost:8181/api/producerRabbitMq/",
 						contentType: 'application/json',
 						data:JSON.stringify(rabbitMQ),
 						crossDomain: false,
 						success: function (data) {
-							console.log('oi');
 						},
 						error: function(jqXHR) {
 							$('#loading').css('display','none');

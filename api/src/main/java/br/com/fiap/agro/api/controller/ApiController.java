@@ -8,8 +8,14 @@ import br.com.fiap.agro.api.service.LocationService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.internet.MimeMessage;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("api")
@@ -38,7 +44,7 @@ public class ApiController {
 
         RabbitMQProducer rabbitMQProducer = new RabbitMQProducer();
         rabbitMQProducer.send(body);
-        return "oi";
+        return "ok";
     }
 
     @GetMapping("/consumerRabbitMQ")

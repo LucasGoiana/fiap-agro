@@ -30,23 +30,5 @@ public class RabbitMQProducer {
         template.convertAndSend(exchange, "fiapAgro", mensagem);
     }
 
-    public void trackingProducer(String mensagem){
-        var connection = RabbitMQConfig.getConnection();
-        //Set up queue, exchanges and bindings
-        RabbitAdmin admin = new RabbitAdmin(connection);
-        Queue fiapAgro = new Queue("tracking");
 
-        final String exchange = "exchange.fiapAgro";
-
-        admin.declareQueue(fiapAgro);
-
-        DirectExchange exchangeTorcedor = new DirectExchange(exchange);
-        admin.declareExchange(exchangeTorcedor);
-
-        admin.declareBinding(BindingBuilder.bind(fiapAgro).to(exchangeTorcedor).with("tracking"));
-
-        RabbitTemplate template = new RabbitTemplate(connection);
-
-        template.convertAndSend(exchange, "tracking", mensagem);
-    }
 }

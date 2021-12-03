@@ -1,4 +1,3 @@
-
 <h1 align="center"> Fiap Hemocentro </h1>
 <p align="center"> Projeto criado para o módulo "INTEGRATIONS & DEVELOPMENT TOOLS" - FIAP - Grupo 1 <br></p>
 
@@ -19,14 +18,14 @@
 
 # As Tecnologias Escolhidas
 
-Para esse projeto foi criado uma api feita com Spring Framework e Mysql e RabbitMQ e também duas telas de front-end, sendo que, a primeira(index.html) representa o drone e a segunda(index2.hmtl) responsável por realizar a pesquisa da última localização do drone e mostra-lá em um mapa<br> <b>Link da Documentação da Api Google Maps:</b> <a href ="https://developers.google.com/maps/documentation/javascript/marker-clustering">Clique aqui</a> . 
+Para esse projeto foi criado uma api feita com Spring Framework e Mysql e RabbitMQ e também duas telas de front-end, sendo que, a primeira(index.html) representa o drone e a segunda(index2.hmtl) responsável por realizar a pesquisa da última localização do drone e mostra-lá em um mapa<br> <b>Link da Documentação da Api Google Maps:</b> <a href ="https://developers.google.com/maps/documentation/javascript/marker-clustering">Clique aqui</a> .
 
 O Software foi dividido em duas camadas:
 
-- **api** - Contempla a API em Java(Spring Framework) com Mysql e RabbitMQ, Cadastro da Última Localização do Drone e o gerenciamento de Filas ultilizando o RabbitMQ.
-    <br>
+- *api* - Contempla a API em Java(Spring Framework) com Mysql e RabbitMQ, Cadastro da Última Localização do Drone e o gerenciamento de Filas ultilizando o RabbitMQ.
+  <br>
 
-- **front** - Contempla o Front-End(HTML 5, CSS 3, JS, Jquery, Ajax) o qual integramos com a api.
+- *front* - Contempla o Front-End(HTML 5, CSS 3, JS, Jquery, Ajax) o qual integramos com a api.
 
 > <b>Obs.:</b> Deixamos no diretório ./fiapAgro.postman_collection.json a collection com todos os endpoints criado, para consumir a fila será necessária executar o endpoint consumerRabbitMQ.
 
@@ -38,8 +37,6 @@ Por fim, escolhemos a estrutura MVC para os projetos, visando separação, estru
 
 ### Diagrama - FiapAgro
 
-![modelo logico](https://lucasgoiana.com/integrations/diagrama.jpeg)
+![modelo logico](https://lucasgoiana.com/integrations/Screenshot.png)
 
 ### Video Explicativo:
-
-

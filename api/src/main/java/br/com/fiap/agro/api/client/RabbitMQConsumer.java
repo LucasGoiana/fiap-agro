@@ -2,7 +2,6 @@ package br.com.fiap.agro.api.client;
 
 import br.com.fiap.agro.api.configuration.RabbitMQConfig;
 
-import org.json.JSONObject;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -48,33 +47,6 @@ public class RabbitMQConsumer {
                 continue;
             }
         }
-    }
-
-    public String getTracking(){
-        var jsonAll = "{Tracking:[ ";
-        var cont = 0;
-            while(true) {
-                try {
-
-                    byte[] body = template.receive("tracking").getBody();
-                    var string = new String(body);
-                    var json = new JSONObject(string);
-                    jsonAll += json + ",";
-
-
-                } catch (NullPointerException ex) {
-                    if (cont == 0) {
-                        cont = 1;
-                        jsonAll += "]}";
-
-                        return jsonAll;
-                    }
-
-                    System.out.println("fila vazia!");
-                    continue;
-                }
-            }
-
     }
 
     private String hydrateEmailBody(String response){
