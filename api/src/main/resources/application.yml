@@ -1,5 +1,5 @@
 server:
-  port: ${port:8080}
+  port: ${port:8181}
   error:
     include-message: always
 spring:
@@ -17,10 +17,10 @@ spring:
     generate-ddl: true
     show-sql: true
 #  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: email@gmail.com
-#    password: suasenha
+#    host: email-ssl.com.br
+#    port: 465
+#    username: send@lucasgoiana.com
+#    password: Fiap@@2021
 #    properties:
 #      mail:
 #        smtp:
@@ -35,7 +35,7 @@ spring:
     host: email-ssl.com.br
     port: 465
     username: send@lucasgoiana.com
-    password: Fiap@@2021
+    password: a@1235222aA
     properties:
       mail:
         smtp:

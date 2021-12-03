@@ -21,9 +21,9 @@
 			<label>Digite a Longitude do Drone:</label><br>
 			<input type="text" value='-46.4882549' class="form-control longitude" placeholder="Insira aqui a Longitude do Drone" name="longitude_drone">
 			<label>Digite a Temperatura:</label><br>
-			<input type="text" value="40" class="form-control temperatura" placeholder="Insira aqui a Temperatura" name="temperatura">
+			<input type="text" value="20" class="form-control temperatura" placeholder="Insira aqui a Temperatura" name="temperatura">
 			<label>Digite a Umidade:</label><br>
-			<input type="text"  value="5" class="form-control umidade"  placeholder="Insira aqui a Umidade do Drone" name="umidade">
+			<input type="text"  value="20" class="form-control umidade"  placeholder="Insira aqui a Umidade do Drone" name="umidade">
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" name="rastrear" checked value="1">
 				<label class="form-check-label" for="flexSwitchCheckChecked">Rastrear Drone</label>
@@ -131,7 +131,6 @@
 						data:JSON.stringify(rabbitMQ),
 						crossDomain: false,
 						success: function (data) {
-							console.log('oi');
 						},
 						error: function(jqXHR) {
 							$('#loading').css('display','none');
