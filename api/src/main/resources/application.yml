@@ -3,6 +3,10 @@ server:
   error:
     include-message: always
 spring:
+  rabbitmq:
+    host: clam-01.rmq.cloudamqp.com
+    username: uymxsaau
+    password: jhEo4pivjk7sdKzlx4JKWTOe6G650RxP
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fiapAgro?createDatabaseIfNotExist=true

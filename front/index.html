@@ -15,7 +15,7 @@
 		<h1>Fiap Agro  - Grupo 1</h1>
 		<form>
 			<label>Digite o Indentificador do Drone:</label><br>
-			<input type="text" class="form-control" placeholder="Insira aqui o Indentificador do Drone" name="id_drone">
+			<input type="number" value="211221" class="form-control drone" placeholder="Insira aqui o Indentificador do Drone"  name="id_drone">
 			<label>Digite a Latitude do Drone:</label><br>
 			<input type="text" value='-23.5520995' class="form-control latitude" placeholder="Insira aqui a Latitude do Drone" name="latitude_drone">
 			<label>Digite a Longitude do Drone:</label><br>
@@ -28,11 +28,7 @@
 				<input class="form-check-input" type="checkbox" name="rastrear" checked value="1">
 				<label class="form-check-label" for="flexSwitchCheckChecked">Rastrear Drone</label>
 			</div>
-			<button class="btn btn-primary">Buscar Hemocentro</button>
 		</form>
-		<div id="map"></div>
-
-		<!--	//<center><img id='loading' src="./images/loading.gif"></center>-->
 	</div>
 	<script src="./js/jquery.min.js"></script>
 	<script src="./js/jquery.mask.js"></script>
@@ -41,96 +37,142 @@
 
 	<script>
 		$(function (e){
-			var cont = 1;
-			var leitura = [];
 
 			setInterval(function() {
-
-				//Zero os valores caso o rastrear mude
-				$("input[name='rastrear']").change(function(){
-					cont = 1;
-					leitura = [];
-				});
-
-				// Se checado entra no looping
-				let rastrear = $("input[name='rastrear']:checked").val();
-
-				if(rastrear != undefined){
-
 					//recuperando valores para medição
 					temperatura = $('.temperatura').val();
+					if(!validateTemperature(temperatura)) {
+						addClassErrorInComponent("temperatura")
+					}else{
+						removeClassErrorInComponent("temperatura")
+					}
+
 					umidade = $('.umidade').val();
+					if(!validateHumidity(umidade)) {
+						addClassErrorInComponent("umidade")
+					}else{
+						removeClassErrorInComponent("umidade")
+					}
+					var rabbitMQ = {'RabbitMQ':[]};
+
+
 					let form = $('form').serialize();
 					let lat = $('.latitude').val();
+					if(!isLatitude(lat)) {
+						addClassErrorInComponent("latitude")
+					}else{
+						removeClassErrorInComponent("latitude")
+					}
 					let long = $('.longitude').val();
+					if(!isLongitude(long)) {
+						addClassErrorInComponent("longitude");
+					}else{
+						removeClassErrorInComponent("longitude");
+					}
+					let id_drone = $('.drone').val();
+					if(id_drone == '' || !isFinite(id_drone) || id_drone <= 0) {
+						addClassErrorInComponent("drone");
+					}else{
+						removeClassErrorInComponent("drone");
+					}
+
+					if($('.error').length > 0){
+						return false;
+					}
+
+					let cont = 0;
 
 					if((temperatura < 35 && temperatura > 0) || umidade > 15) {
 						cont = 1;
-						leitura = [];
 					}
-					//Armazena os valores no array
-					leitura['temperatura'+cont] = temperatura;
-					leitura['umidade'+cont] = umidade;
-					leitura['lat'+cont] = lat;
-					leitura['long'+cont] = lat;
 
-					// Se maior que 6 ultrapassa 1 minuto e zero o array e o contador
-					if(cont >= 6 ){
-
-						$.ajax({
-							method: "GET",
-							url: "http://localhost:8081/api/",
-							contentType: 'application/json',
-							data: leitura,
-							crossDomain: false,
-							success: function (data) {
-								alert('oi');
-							},
-							error: function(jqXHR) {
-								$('#loading').css('display','none');
-								if(jqXHR.status == 400 ){
-									alert('Busca efetuada com sucesso,porém, o CEP não encontrado em nossa base de dados. Por favor, tente com um outro CEP.')
-								}else{
-									alert('Erro Interno, Verifique o CEP enviádo e tente novamente!!')
-								}
+				// Se checado entra no looping
+				let rastrear = $("input[name='rastrear']:checked").val();
+				if(rastrear != undefined){
+					var location = {};
+					location = {
+						"idDrone": id_drone,
+						"latitude":lat,
+						"longitude":long
+					};
+					$.ajax({
+						method: "POST",
+						url: "http://localhost:8080/api/tracking/",
+						contentType: 'application/json',
+						data:JSON.stringify(location),
+						crossDomain: false,
+						success: function (data) {
+							console.log('oi');
+						},
+						error: function(jqXHR) {
+							$('#loading').css('display','none');
+							if(jqXHR.status == 400 ){
+								console.log('Erro com sua aplicação, Not Found!')
+							}else{
+								console.log('Erro Interno, Verifique se o servidor está ativo enviádo e tente novamente!!')
 							}
-						});
-						console.log('Email disparado');
-						cont = 1;
-						leitura = [];
-					}
-					cont++;
-
-					console.log(lat);
-					initMap(parseFloat(lat),parseFloat(long));
+						}
+					});
 				}
+
+				rabbitMQ.RabbitMQ.push({
+						"id_drone": id_drone,
+						"latitude":lat,
+						"longitude":long,
+						"temperatura": temperatura,
+						"umidade":umidade,
+						"disparaEmail":cont
+					});
+
+					$.ajax({
+						method: "POST",
+						url: "http://localhost:8080/api/producerRabbitMq/",
+						contentType: 'application/json',
+						data:JSON.stringify(rabbitMQ),
+						crossDomain: false,
+						success: function (data) {
+							console.log('oi');
+						},
+						error: function(jqXHR) {
+							$('#loading').css('display','none');
+							if(jqXHR.status == 400 ){
+								console.log('Erro com sua aplicação, Not Found!')
+							}else{
+								console.log('Erro Interno, Verifique se o servidor está ativo enviádo e tente novamente!!')
+							}
+						}
+					});
+					initMap(parseFloat(lat),parseFloat(long));
+
 			}, 2000);
 
-
-		let map;
-
-		function initMap(lat, long) {
-			const uluru =  { lat: lat, lng: long }
-			map = new google.maps.Map(document.getElementById("map"), {
-				center: uluru,
-				zoom:12,
-			});
-
-			// The marker, positioned at Uluru
-			const marker = new google.maps.Marker({
-				position: uluru,
-				map: map,
-			});
-		}
 		});
+
+		function isLatitude(lat) {
+			return lat != "" && isFinite(lat) && Math.abs(lat) <= 90;
+		}
+
+		function isLongitude(lng) {
+			return lng != "" && isFinite(lng) && Math.abs(lng) <= 180;
+		}
+
+		function validateTemperature(temperature){
+			return temperature != '' && isFinite(temperature) && temperature >= -25 && temperature <= 40 ;
+		}
+
+		function validateHumidity(humidity){
+			return humidity != '' && isFinite(humidity) && humidity >= 0 && humidity <= 100 ;
+		}
+
+		function addClassErrorInComponent(componentName){
+			$('.'+componentName).addClass("error")
+		}
+
+		function removeClassErrorInComponent(componentName){
+			$('.'+componentName).removeClass("error")
+		}
+
 	</script>
-	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-	<script
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8VtYkrhGniZWkCyNqHw23SCp8nX6Fzyo&callback=initMap&v=weekly&channel=1"
-			async
-	></script>
 </div>
 
 </body>
-
-

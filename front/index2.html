@@ -1,0 +1,128 @@
+<html>
+<head>
+	<title>Fiap Agro </title>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+</head>
+
+
+<body>
+<div id="iframe-contents">
+	<div class="container">
+		<h1>Rastrear Drone - Última  Localização</h1>
+
+
+				<label>Digite o Indentificador do Drone:</label><br>
+				<input type="number" required class="form-control drone" placeholder="Insira aqui o Indentificador do Drone"  name="id_drone">
+				<a class="btn btn-primary">Buscar Localização</a>
+
+
+
+		<div class="remove">
+			<div id="map"></div>
+			<center><img  style="display:none;" src="images/loading.gif" style="width:400px;"></center>
+		</div>
+	</div>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/jquery.mask.js"></script>
+	<script src="./js/jMaskStyle.js"></script>
+	<script src="./js/script.js"></script>
+
+	<script>
+		$(function (){
+
+			$('.btn').click(function(event) {
+				$('#map').remove();
+				$('.remove').append("<div id=\"map\"></div>");
+				var drone = $('.drone').val();
+
+				if(drone != '' && drone != 'undefined') {
+					$('img').css({'display': 'block'});
+
+					$.ajax({
+						method: "GET",
+						url: "http://localhost:8080/api/tracking/" + drone,
+						contentType: 'application/json',
+						crossDomain: false,
+						success: function (data) {
+							$('img').css({'display': 'none'});
+							console.log(data.latitude);
+							let map;
+
+							function initMap(lat, long) {
+								const uluru =  { lat: lat, lng: long }
+								map = new google.maps.Map(document.getElementById("map"), {
+									center: uluru,
+									zoom:12,
+								});
+
+								// The marker, positioned at Uluru
+								const marker = new google.maps.Marker({
+									position: uluru,
+									map: map,
+								});
+							}
+
+							initMap(parseFloat(data.latitude), parseFloat(data.longitude) );
+						},
+						error: function (jqXHR) {
+
+							if (jqXHR.status == 404) {
+								$('img').css('display', 'none');
+								alert('Erro ID do drone inválido, por favor, verifique e tente novamente!')
+							} else {
+								$('img').css('display', 'none');
+								alert('Erro Interno, Verifique se o servidor está ativo enviádo e tente novamente!!')
+							}
+						}
+					});
+				} else {
+					alert('Por favor, insira o id do drone para efetuar a pesquisa!')
+				}
+
+			});
+
+		});
+	</script>
+<!--		$(function (e){-->
+
+<!--		-->
+
+<!--					$.ajax({-->
+<!--						method: "POST",-->
+<!--						url: "http://localhost:8080/api/producerRabbitMq/",-->
+<!--						contentType: 'application/json',-->
+<!--						data:JSON.stringify(rabbitMQ),-->
+<!--						crossDomain: false,-->
+<!--						success: function (data) {-->
+<!--							console.log('oi');-->
+<!--						},-->
+<!--						error: function(jqXHR) {-->
+<!--							$('#loading').css('display','none');-->
+<!--							if(jqXHR.status == 400 ){-->
+<!--								console.log('Erro com sua aplicação, Not Found!')-->
+<!--							}else{-->
+<!--								console.log('Erro Interno, Verifique se o servidor está ativo enviádo e tente novamente!!')-->
+<!--							}-->
+<!--						}-->
+<!--					});-->
+
+
+
+
+		});
+
+<!--	</script>-->
+	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+	<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8VtYkrhGniZWkCyNqHw23SCp8nX6Fzyo&callback=initMap&v=weekly&channel=1"
+			async
+	></script>
+</div>
+
+</body>
+
+
