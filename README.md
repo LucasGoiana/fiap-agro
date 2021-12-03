@@ -39,4 +39,8 @@ Por fim, escolhemos a estrutura MVC para os projetos, visando separação, estru
 
 ![modelo logico](https://lucasgoiana.com/integrations/Screenshot.png)
 
-  # Video Explicativo: <a href="https://youtu.be/aEgayyYPdsA">Clique Aqui</a>
+  # Video Explicativo: 
+ <a href="https://youtu.be/aEgayyYPdsA">Clique Aqui</a>
+
+ # Link Git:
+ <a href="https://github.com/LucasGoiana/fiap-agro">Clique Aqui</a>
