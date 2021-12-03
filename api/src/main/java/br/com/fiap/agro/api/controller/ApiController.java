@@ -1,72 +1,62 @@
 package br.com.fiap.agro.api.controller;
 
 
-import br.com.fiap.agro.api.client.SendEmail;
-import br.com.fiap.agro.api.dto.DatasDto;
-import br.com.fiap.agro.api.dto.EmailDatasDTO;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import br.com.fiap.agro.api.client.RabbitMQConsumer;
+import br.com.fiap.agro.api.client.RabbitMQProducer;
+import br.com.fiap.agro.api.dto.LocaltionDTO;
+import br.com.fiap.agro.api.service.LocationService;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.internet.MimeMessage;
-import java.util.List;
 
 @RestController
 @RequestMapping("api")
 public class ApiController {
 
     @Autowired private JavaMailSender mailSender;
+    private final LocationService createLocationService;
 
-    @PostMapping("/")
-    public String sendEmail(@RequestBody String information){
-        try {
-            JSONObject jsonObject = new JSONObject(information);
-            JSONArray jsonArray = new JSONArray(jsonObject.get("SendEmail").toString());
-            StringBuilder email = new StringBuilder("<h1>Alerta de Umidade e Temperatura</h1><p>");
-                for (int i=0;i<jsonArray.length();i++){
-                    JSONObject jsonObject2 = new JSONObject(jsonArray.get(i).toString());
-                    email.append("ID do Drone: ").append(jsonObject2.get("id_drone")).append("<br>").append("\n");
-                    email.append("Latitude: ").append(jsonObject2.get("latitude")).append("<br>").append("\n");
-                    email.append("Longitude: ").append(jsonObject2.get("longitude")).append("<br>").append("\n");
-                    email.append("Umidade: ").append(jsonObject2.get("umidade")).append("<br>").append("\n");
-                    email.append("Temperatura: ").append(jsonObject2.get("temperatura")).append("<br><br><br>").append("\n");
-                }
-
-                email.append("</p>");
-            MimeMessage mail = mailSender.createMimeMessage();
-
-            MimeMessageHelper helper = new MimeMessageHelper( mail );
-            helper.setTo( "lucasgoianam@hotmail.com" );
-            helper.setFrom("send@lucasgoiana.com");
-            helper.setSubject( "Email de Alerta" );
-
-
-
-            helper.setText(email.toString(), true);
-            mailSender.send(mail);
-
-            return "OK";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Erro ao enviar e-mail";
-        }
-
+    public ApiController(LocationService createLocationService) {
+        this.createLocationService = createLocationService;
     }
 
+    @PostMapping("/producerRabbitMq/")
+    public String sendRabbitMQ(@RequestBody String information){
 
-    @PostMapping("/tracking/")
-    public String makeTracking(@RequestBody String information){
+        JSONObject jsonObject = new JSONObject(information);
+        JSONArray jsonArray = new JSONArray(jsonObject.get("RabbitMQ").toString());
+        JSONObject jsonObject2 = new JSONObject(jsonArray.get(0).toString());
+        String  body =
+                "ID Drone: " +  jsonObject2.get("id_drone").toString()
+                + "\nLatitude: " +  jsonObject2.get("latitude").toString()
+                + "\nLongitude: " +  jsonObject2.get("longitude").toString()
+                + "\nUmidade: " +  jsonObject2.get("umidade").toString()
+                + "\nTemperatura: " + jsonObject2.get("temperatura")
+                +"\nSendEmail: " + jsonObject2.get("disparaEmail")+"\n";
+
+        RabbitMQProducer rabbitMQProducer = new RabbitMQProducer();
+        rabbitMQProducer.send(body);
+        return "oi";
+    }
+
+    @GetMapping("/consumerRabbitMQ")
+    public void consumer(){
         RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumer();
         rabbitMQConsumer.consumer(mailSender);
 
-        return "OK";
+    }
+
+    @PostMapping("/tracking/")
+    public LocaltionDTO makeTracking(@RequestBody LocaltionDTO localtionDTO){
+        return createLocationService.makeTracking(localtionDTO);
+    }
+
+    @GetMapping("/tracking/{idDrone}")
+    public LocaltionDTO getTracking(@PathVariable String idDrone){
+
+        return createLocationService.getTracking(idDrone);
+
     }
 }

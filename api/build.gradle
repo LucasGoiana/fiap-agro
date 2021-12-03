@@ -29,7 +29,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-security')
 
 	compileOnly 'org.projectlombok:lombok'
-	implementation 'com.rabbitmq:amqp-client:5.14.0'
+	implementation 'org.springframework.amqp:spring-rabbit'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
