@@ -39,4 +39,4 @@ Por fim, escolhemos a estrutura MVC para os projetos, visando separação, estru
 
 ![modelo logico](https://lucasgoiana.com/integrations/Screenshot.png)
 
-### Video Explicativo:
+  ### Video Explicativo: <a hres="https://youtu.be/aEgayyYPdsA"></a>
