@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "e1b9a091-acd6-4ab5-81da-3ede6bac05fa",
+		"name": "fiapAgro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SendEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n    \"SendEmail\":[  \n       {\n          \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n          \"umidade\":\"10\",\n          \"temperatura\":\"20\"\n       },\n       {\n          \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n          \"umidade\":\"30\",\n          \"temperatura\":\"40\"\n       },\n       { \n          \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n          \"umidade\":\"50\",\n          \"temperatura\":\"60\"\n        },\n        { \n           \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n          \"umidade\":\"70\",\n          \"temperatura\":\"80\"\n        },\n        {\n            \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n           \"umidade\":\"90\",\n          \"temperatura\":\"100\"\n\n        },\n         {\n            \"id_drone\":\"1\",\n          \"latitude\":\"-23.5520995\",\n          \"longitude\":\"-46.4882549\",\n           \"umidade\":\"100\",\n          \"temperatura\":\"110\"\n\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sendEmail/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sendEmail",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "producerRabbitMq",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n    \"RabbitMQ\":[  \n       {\n          \"umidade\":\"20\",\n          \"temperatura\":\"30\"\n       }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/producerRabbitMq/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"producerRabbitMq",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "consumerRabbitMQ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/consumerRabbitMQ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"consumerRabbitMQ"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tracking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idDrone\":222,\n    \"latitude\":\"-23.5520995\",\n    \"longitude\":\"-46.4882549\"\n}\n    \n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tracking/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracking",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tracking",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tracking/222",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tracking",
+						"222"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
